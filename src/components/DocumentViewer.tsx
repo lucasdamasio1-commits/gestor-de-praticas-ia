@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import { Discipline } from "../types";
-import { Printer, Download, User, Hash, Calendar } from "lucide-react";
+import { Printer, Download } from "lucide-react";
 
 interface DocumentViewerProps {
   disciplines: Discipline[];
 }
 
 export default function DocumentViewer({ disciplines }: DocumentViewerProps) {
-  // Student metadata (editable by the user for custom document filling)
-  const [studentName, setStudentName] = useState("LUCAS DAMASIO");
-  const [studentRA, setStudentRA] = useState("123456-7");
-  const [academicYear, setAcademicYear] = useState("2026/2");
-  
   const [filterPrintPeriod, setFilterPrintPeriod] = useState<string>("ALL");
 
   // Filter disciplines to print
@@ -154,51 +149,19 @@ export default function DocumentViewer({ disciplines }: DocumentViewerProps) {
           <p className="text-[11px] text-slate-500 mt-1">Grade de disciplinas, cargas horárias e estruturação de créditos para homologação junto ao PPC</p>
         </div>
 
-        {/* Student and Academic Info Form (Editable directly) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border border-slate-200 rounded-lg p-4 bg-slate-50 mb-6">
-          <div className="space-y-1">
-            <label className="block text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">Nome do Aluno / Responsável</label>
-            <div className="flex items-center gap-1.5 no-print">
-              <User className="w-3.5 h-3.5 text-slate-400" />
-              <input
-                id="student-name-input"
-                type="text"
-                value={studentName}
-                onChange={(e) => setStudentName(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded px-2 py-1 text-xs font-semibold uppercase text-slate-800 focus:outline-none"
-              />
-            </div>
-            <div className="hidden print-block text-xs font-bold uppercase text-slate-800 py-1">{studentName}</div>
+        {/* Course Info Block */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border border-slate-200 rounded-lg p-4 bg-slate-50 mb-6 text-xs text-slate-700">
+          <div>
+            <span className="block text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">Curso</span>
+            <span className="font-semibold text-slate-800">Bacharelado em Publicidade e Propaganda</span>
           </div>
-
-          <div className="space-y-1">
-            <label className="block text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">Registro Acadêmico (RA)</label>
-            <div className="flex items-center gap-1.5 no-print">
-              <Hash className="w-3.5 h-3.5 text-slate-400" />
-              <input
-                id="student-ra-input"
-                type="text"
-                value={studentRA}
-                onChange={(e) => setStudentRA(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded px-2 py-1 text-xs font-semibold uppercase text-slate-800 focus:outline-none"
-              />
-            </div>
-            <div className="hidden print-block text-xs font-mono font-bold text-slate-800 py-1">{studentRA}</div>
+          <div>
+            <span className="block text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">Coordenador do Curso</span>
+            <span className="font-semibold text-slate-800">Prof. Lucas Damasio</span>
           </div>
-
-          <div className="space-y-1">
-            <label className="block text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">Período Letivo</label>
-            <div className="flex items-center gap-1.5 no-print">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
-              <input
-                id="student-year-input"
-                type="text"
-                value={academicYear}
-                onChange={(e) => setAcademicYear(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded px-2 py-1 text-xs font-semibold uppercase text-slate-800 focus:outline-none"
-              />
-            </div>
-            <div className="hidden print-block text-xs font-bold text-slate-800 py-1">{academicYear}</div>
+          <div>
+            <span className="block text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider">Modalidade e Local</span>
+            <span className="font-semibold text-slate-800">Presencial | Curitiba, PR</span>
           </div>
         </div>
 
@@ -319,16 +282,16 @@ export default function DocumentViewer({ disciplines }: DocumentViewerProps) {
           <div className="space-y-3">
             <div className="border-b border-slate-400 mx-auto w-44 h-8"></div>
             <div>
-              <p className="text-xs font-bold text-slate-700">{studentName}</p>
-              <p className="text-[9px] text-slate-400 uppercase tracking-wider">Estudante de Publicidade</p>
+              <p className="text-xs font-bold text-slate-700">Prof. Lucas Damasio</p>
+              <p className="text-[9px] text-slate-400 uppercase tracking-wider">Coordenação de Publicidade e Propaganda</p>
             </div>
           </div>
 
           <div className="space-y-3">
             <div className="border-b border-slate-400 mx-auto w-44 h-8"></div>
             <div>
-              <p className="text-xs font-bold text-slate-700">Prof. Me. Letícia Stroparo Tozetti</p>
-              <p className="text-[9px] text-slate-400 uppercase tracking-wider">Coordenação do Bacharelado em Publicidade e Propaganda</p>
+              <p className="text-xs font-bold text-slate-700">Colegiado de Curso / NDE</p>
+              <p className="text-[9px] text-slate-400 uppercase tracking-wider">Escola de Comunicação e Negócios</p>
             </div>
           </div>
         </div>

@@ -1,0 +1,6 @@
+{
+  "name": "Gestor de Práticas - Publicidade UniBrasil",
+  "description": "Planilha e gerador de documentos interativo para acompanhamento das práticas curriculares e atividades complementares do curso de Publicidade e Propaganda da UniBrasil com suporte a IA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

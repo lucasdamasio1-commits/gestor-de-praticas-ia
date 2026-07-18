@@ -5,13 +5,15 @@ import StatsCards from "./components/StatsCards";
 import PracticeSpreadsheet from "./components/PracticeSpreadsheet";
 import DocumentViewer from "./components/DocumentViewer";
 import AiAssistant from "./components/AiAssistant";
-import { BookOpen, FileText, Sparkles, RefreshCw, GraduationCap } from "lucide-react";
+import ScheduleViewer from "./components/ScheduleViewer";
+import StudentControl from "./components/StudentControl";
+import { BookOpen, FileText, Sparkles, RefreshCw, GraduationCap, Calendar, Users } from "lucide-react";
 
 export default function App() {
   // Main state for disciplines
   const [disciplines, setDisciplines] = useState<Discipline[]>([]);
   const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | null>(null);
-  const [activeTab, setActiveTab] = useState<"PLANILHA" | "DOCUMENTO">("PLANILHA");
+  const [activeTab, setActiveTab] = useState<"PLANILHA" | "DOCUMENTO" | "HORARIOS" | "CONTROLE_ALUNOS">("PLANILHA");
 
   // Load from local storage on mount
   useEffect(() => {
@@ -177,6 +179,30 @@ export default function App() {
               <FileText className="w-3.5 h-3.5" />
               <span>Visualizar Dossiê PPC</span>
             </button>
+            <button
+              id="tab-horarios"
+              onClick={() => setActiveTab("HORARIOS")}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "HORARIOS"
+                  ? "bg-slate-900 text-amber-400 shadow-xs"
+                  : "text-slate-400 hover:text-slate-100"
+              }`}
+            >
+              <Calendar className="w-3.5 h-3.5" />
+              <span>Horários de Aula (2026/2)</span>
+            </button>
+            <button
+              id="tab-controle-alunos"
+              onClick={() => setActiveTab("CONTROLE_ALUNOS")}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "CONTROLE_ALUNOS"
+                  ? "bg-slate-900 text-amber-400 shadow-xs"
+                  : "text-slate-400 hover:text-slate-100"
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Controle de Notas e Faltas (1º Bim)</span>
+            </button>
           </div>
 
           {/* Quick Resets */}
@@ -219,39 +245,78 @@ export default function App() {
           <StatsCards disciplines={disciplines} />
         </div>
 
-        {/* Workspace Dual Grid Layout (Main Content Left / AI Assistant Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-          
-          {/* Main Panel Content (Column span 3 in lg screen) */}
-          <div className="lg:col-span-3 space-y-6">
-            {activeTab === "PLANILHA" ? (
-              <div id="view-spreadsheet" className="no-print">
-                <PracticeSpreadsheet
-                  disciplines={disciplines}
-                  onSelectDiscipline={handleSelectDiscipline}
-                  onUpdateDiscipline={handleUpdateDiscipline}
-                  onAddDiscipline={handleAddDiscipline}
-                  onDeleteDiscipline={handleDeleteDiscipline}
-                  selectedDisciplineId={selectedDiscipline?.id}
-                />
-              </div>
-            ) : (
-              <div id="view-document">
-                <DocumentViewer disciplines={disciplines} />
-              </div>
-            )}
+        {/* Workspace Layout depending on activeTab */}
+        {activeTab === "HORARIOS" ? (
+          <div id="view-schedule" className="no-print">
+            <ScheduleViewer />
           </div>
-
-          {/* AI Advisor Panel (Column span 1) */}
-          <div className="lg:col-span-1 no-print">
-            <AiAssistant
-              selectedDiscipline={selectedDiscipline}
-              onApplyAiSuggestions={handleApplyAiSuggestions}
-              onAppendObservations={handleAppendObservations}
+        ) : activeTab === "CONTROLE_ALUNOS" ? (
+          <div id="view-students" className="space-y-6">
+            <StudentControl 
+              disciplines={disciplines} 
+              onImportNewDisciplines={(newDisList) => {
+                const updated = [...disciplines];
+                let changed = false;
+                newDisList.forEach(item => {
+                  const alreadyExists = updated.some(d => d.id.toUpperCase() === item.id.toUpperCase());
+                  if (!alreadyExists) {
+                    updated.push({
+                      id: item.id,
+                      periodo: selectedDiscipline?.periodo || 1,
+                      nome: item.nome,
+                      areaConhecimento: "OBRIGATÓRIA DO CURSO",
+                      tipo: "PRESENCIAL",
+                      ch: (item as any).ch || 80,
+                      chTeo: ((item as any).ch || 80) / 2,
+                      chPra: ((item as any).ch || 80) / 2,
+                      chEst: 0,
+                      chEad: 0,
+                      chExt: 0,
+                      chAds: 13,
+                      credito: 4,
+                      ementa: "Disciplina adicionada automaticamente ao importar a pauta de notas e faltas."
+                    });
+                    changed = true;
+                  }
+                });
+                if (changed) {
+                  saveAndSetDisciplines(updated);
+                }
+              }}
             />
           </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+            {/* Main Panel Content (Column span 3 in lg screen) */}
+            <div className="lg:col-span-3 space-y-6">
+              {activeTab === "PLANILHA" ? (
+                <div id="view-spreadsheet" className="no-print">
+                  <PracticeSpreadsheet
+                    disciplines={disciplines}
+                    onSelectDiscipline={handleSelectDiscipline}
+                    onUpdateDiscipline={handleUpdateDiscipline}
+                    onAddDiscipline={handleAddDiscipline}
+                    onDeleteDiscipline={handleDeleteDiscipline}
+                    selectedDisciplineId={selectedDiscipline?.id}
+                  />
+                </div>
+              ) : (
+                <div id="view-document">
+                  <DocumentViewer disciplines={disciplines} />
+                </div>
+              )}
+            </div>
 
-        </div>
+            {/* AI Advisor Panel (Column span 1) */}
+            <div className="lg:col-span-1 no-print">
+              <AiAssistant
+                selectedDiscipline={selectedDiscipline}
+                onApplyAiSuggestions={handleApplyAiSuggestions}
+                onAppendObservations={handleAppendObservations}
+              />
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Corporate Academic Footer */}

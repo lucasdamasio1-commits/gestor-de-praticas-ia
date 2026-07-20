@@ -47,6 +47,12 @@ export default function PracticeSpreadsheet({
   const [formPraticaAtividade, setFormPraticaAtividade] = useState("");
   const [formAmbientePratica, setFormAmbientePratica] = useState("");
   const [formNivelExigencia, setFormNivelExigencia] = useState("Exigência Média");
+  const [formLocalPratica, setFormLocalPratica] = useState("");
+  const [formTipoPratica, setFormTipoPratica] = useState("");
+  const [formCompetenciaDesenvolvida, setFormCompetenciaDesenvolvida] = useState("");
+  const [formCapacidadeAtividade, setFormCapacidadeAtividade] = useState("");
+  const [formDocumentoEvidencia, setFormDocumentoEvidencia] = useState("");
+  const [formFragilidadeOportunidade, setFormFragilidadeOportunidade] = useState("");
 
   const areas = [
     "BÁSICA DO CURSO",
@@ -82,6 +88,12 @@ export default function PracticeSpreadsheet({
     setFormPraticaAtividade("");
     setFormAmbientePratica("");
     setFormNivelExigencia("Exigência Média");
+    setFormLocalPratica("");
+    setFormTipoPratica("");
+    setFormCompetenciaDesenvolvida("");
+    setFormCapacidadeAtividade("");
+    setFormDocumentoEvidencia("");
+    setFormFragilidadeOportunidade("");
     setIsFormOpen(true);
   };
 
@@ -107,6 +119,12 @@ export default function PracticeSpreadsheet({
     setFormPraticaAtividade(d.praticaAtividade || "");
     setFormAmbientePratica(d.ambientePratica || "");
     setFormNivelExigencia(d.nivelExigencia || "Exigência Média");
+    setFormLocalPratica(d.localPratica || "");
+    setFormTipoPratica(d.tipoPratica || "");
+    setFormCompetenciaDesenvolvida(d.competenciaDesenvolvida || "");
+    setFormCapacidadeAtividade(d.capacidadeAtividade || "");
+    setFormDocumentoEvidencia(d.documentoEvidencia || "");
+    setFormFragilidadeOportunidade(d.fragilidadeOportunidade || "");
     setIsFormOpen(true);
   };
 
@@ -132,7 +150,13 @@ export default function PracticeSpreadsheet({
       observacoes: formObservacoes,
       praticaAtividade: formPraticaAtividade,
       ambientePratica: formAmbientePratica,
-      nivelExigencia: formNivelExigencia
+      nivelExigencia: formNivelExigencia,
+      localPratica: formLocalPratica,
+      tipoPratica: formTipoPratica,
+      competenciaDesenvolvida: formCompetenciaDesenvolvida,
+      capacidadeAtividade: formCapacidadeAtividade,
+      documentoEvidencia: formDocumentoEvidencia,
+      fragilidadeOportunidade: formFragilidadeOportunidade
     };
 
     if (editingDiscipline) {
@@ -278,7 +302,7 @@ export default function PracticeSpreadsheet({
 
       {/* Spreadsheet Grid Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[1200px]">
+        <table className="w-full text-left border-collapse min-w-[2000px]">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-mono text-[10px] uppercase tracking-wider">
               <th className="py-3 px-4 font-semibold w-24">Cód</th>
@@ -292,8 +316,14 @@ export default function PracticeSpreadsheet({
               <th className="py-3 px-2 font-semibold text-center w-16">EXT</th>
               <th className="py-3 px-2 font-semibold text-center w-16">ADS</th>
               <th className="py-3 px-2 font-semibold text-center w-16">Cred</th>
-              <th className="py-3 px-4 font-semibold w-40">Prática/Atividade</th>
-              <th className="py-3 px-4 font-semibold w-40">Ambiente de Prática</th>
+              <th className="py-3 px-4 font-semibold w-64 min-w-[240px]">Prática/Atividade</th>
+              <th className="py-3 px-4 font-semibold w-48 min-w-[180px]">Ambiente de Prática</th>
+              <th className="py-3 px-4 font-semibold w-52 min-w-[200px]">Local / Laboratório / Núcleo / Parceiro</th>
+              <th className="py-3 px-4 font-semibold w-44 min-w-[160px]">Tipo de Prática</th>
+              <th className="py-3 px-4 font-semibold w-64 min-w-[240px]">Competência / Habilidade Desenvolvida</th>
+              <th className="py-3 px-4 font-semibold w-40 min-w-[140px]">Capacidade da Atividade</th>
+              <th className="py-3 px-4 font-semibold w-48 min-w-[180px]">Documento / Evidência</th>
+              <th className="py-3 px-4 font-semibold w-64 min-w-[240px]">Fragilidade / Oportunidade de Melhoria</th>
               <th className="py-3 px-3 font-semibold text-center w-28">Nível Exigência</th>
               <th className="py-3 px-4 text-center w-28">Ações</th>
             </tr>
@@ -301,11 +331,11 @@ export default function PracticeSpreadsheet({
           <tbody className="divide-y divide-slate-100 text-xs">
             {filteredDisciplines.length === 0 ? (
               <tr>
-                <td colSpan={15} className="text-center py-12 text-slate-400 bg-slate-50/50">
+                <td colSpan={21} className="text-center py-12 text-slate-400 bg-slate-50/50">
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <HelpCircle className="w-8 h-8 text-slate-300" />
-                    <p className="font-medium text-slate-600">Nenhum componente curricular encontrado</p>
-                    <p className="text-xs">Ajuste seus filtros ou adicione uma nova disciplina customizada.</p>
+                     <HelpCircle className="w-8 h-8 text-slate-300" />
+                     <p className="font-medium text-slate-600">Nenhum componente curricular encontrado</p>
+                     <p className="text-xs">Ajuste seus filtros ou adicione uma nova disciplina customizada.</p>
                   </div>
                 </td>
               </tr>
@@ -379,13 +409,43 @@ export default function PracticeSpreadsheet({
                     <td className="py-3 px-2 text-center font-mono font-bold text-amber-600">{d.credito > 0 ? d.credito : "-"}</td>
 
                     {/* Prática/Atividade */}
-                    <td className="py-3 px-4 font-sans text-slate-700 max-w-xs truncate" title={d.praticaAtividade}>
+                    <td className="py-3 px-4 font-sans text-slate-700 break-words whitespace-normal leading-relaxed">
                       {d.praticaAtividade || "-"}
                     </td>
 
                     {/* Ambiente de Prática */}
-                    <td className="py-3 px-4 font-sans text-slate-600 max-w-xs truncate" title={d.ambientePratica}>
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
                       {d.ambientePratica || "-"}
+                    </td>
+
+                    {/* Local / Laboratório / Núcleo / Parceiro */}
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
+                      {d.localPratica || "-"}
+                    </td>
+
+                    {/* Tipo de Prática */}
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
+                      {d.tipoPratica || "-"}
+                    </td>
+
+                    {/* Competência / Habilidade Desenvolvida */}
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
+                      {d.competenciaDesenvolvida || "-"}
+                    </td>
+
+                    {/* Capacidade da Atividade */}
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
+                      {d.capacidadeAtividade || "-"}
+                    </td>
+
+                    {/* Documento / Evidência */}
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
+                      {d.documentoEvidencia || "-"}
+                    </td>
+
+                    {/* Fragilidade / Oportunidade de Melhoria */}
+                    <td className="py-3 px-4 font-sans text-slate-600 break-words whitespace-normal leading-relaxed">
+                      {d.fragilidadeOportunidade || "-"}
                     </td>
 
                     {/* Nível de Exigência */}
@@ -680,17 +740,86 @@ export default function PracticeSpreadsheet({
                   </div>
                 </div>
 
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Local / Laboratório / Núcleo / Parceiro</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Agência Experimental de PP"
+                      value={formLocalPratica}
+                      onChange={(e) => setFormLocalPratica(e.target.value)}
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Tipo de Prática</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Simulação de Atendimento"
+                      value={formTipoPratica}
+                      onChange={(e) => setFormTipoPratica(e.target.value)}
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Competência / Habilidade Desenvolvida</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Domínio de softwares gráficos"
+                      value={formCompetenciaDesenvolvida}
+                      onChange={(e) => setFormCompetenciaDesenvolvida(e.target.value)}
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Capacidade da Atividade</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: 25 alunos por sessão"
+                      value={formCapacidadeAtividade}
+                      onChange={(e) => setFormCapacidadeAtividade(e.target.value)}
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Documento / Evidência</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: Relatório de Projeto Acadêmico"
+                      value={formDocumentoEvidencia}
+                      onChange={(e) => setFormDocumentoEvidencia(e.target.value)}
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Nível de Exigência</label>
+                    <select
+                      value={formNivelExigencia}
+                      onChange={(e) => setFormNivelExigencia(e.target.value)}
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white text-xs"
+                    >
+                      <option value="Exigência Baixa">Exigência Baixa</option>
+                      <option value="Exigência Média">Exigência Média</option>
+                      <option value="Exigência Alta">Exigência Alta</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Nível de Exigência</label>
-                  <select
-                    value={formNivelExigencia}
-                    onChange={(e) => setFormNivelExigencia(e.target.value)}
-                    className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white text-xs"
-                  >
-                    <option value="Exigência Baixa">Exigência Baixa</option>
-                    <option value="Exigência Média">Exigência Média</option>
-                    <option value="Exigência Alta">Exigência Alta</option>
-                  </select>
+                  <label className="block font-mono text-[9px] font-bold text-slate-500 uppercase mb-1">Fragilidade / Oportunidade de Melhoria</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Necessidade de renovação dos computadores do Lab A"
+                    value={formFragilidadeOportunidade}
+                    onChange={(e) => setFormFragilidadeOportunidade(e.target.value)}
+                    className="w-full px-3 py-1.5 border border-slate-300 rounded-lg bg-white"
+                  />
                 </div>
               </div>
 

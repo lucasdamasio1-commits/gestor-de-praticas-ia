@@ -7,13 +7,14 @@ import DocumentViewer from "./components/DocumentViewer";
 import AiAssistant from "./components/AiAssistant";
 import ScheduleViewer from "./components/ScheduleViewer";
 import StudentControl from "./components/StudentControl";
+import LessonPlanGenerator from "./components/LessonPlanGenerator";
 import { BookOpen, FileText, Sparkles, RefreshCw, GraduationCap, Calendar, Users } from "lucide-react";
 
 export default function App() {
   // Main state for disciplines
   const [disciplines, setDisciplines] = useState<Discipline[]>([]);
   const [selectedDiscipline, setSelectedDiscipline] = useState<Discipline | null>(null);
-  const [activeTab, setActiveTab] = useState<"PLANILHA" | "DOCUMENTO" | "HORARIOS" | "CONTROLE_ALUNOS">("PLANILHA");
+  const [activeTab, setActiveTab] = useState<"PLANILHA" | "DOCUMENTO" | "HORARIOS" | "CONTROLE_ALUNOS" | "PLANO_AULA">("PLANILHA");
 
   // Load from local storage on mount
   useEffect(() => {
@@ -149,7 +150,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-sm font-sans font-extrabold tracking-wider text-slate-100 uppercase">UniBrasil</h1>
-              <p className="text-[10px] font-mono font-medium text-amber-400 tracking-widest uppercase">Matriz Curricular de Publicidade</p>
+              <p className="text-[10px] font-mono font-medium text-amber-400 tracking-widest uppercase">Painel Gestor de Curso - Publicidade e Propaganda</p>
             </div>
           </div>
 
@@ -202,6 +203,18 @@ export default function App() {
             >
               <Users className="w-3.5 h-3.5" />
               <span>Controle de Notas e Faltas (1º Bim)</span>
+            </button>
+            <button
+              id="tab-plano-aula"
+              onClick={() => setActiveTab("PLANO_AULA")}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "PLANO_AULA"
+                  ? "bg-slate-900 text-amber-400 shadow-xs"
+                  : "text-slate-400 hover:text-slate-100"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Plano de Aula</span>
             </button>
           </div>
 
@@ -285,6 +298,10 @@ export default function App() {
               }}
             />
           </div>
+        ) : activeTab === "PLANO_AULA" ? (
+          <div id="view-lesson-plan" className="space-y-6">
+            <LessonPlanGenerator disciplines={disciplines} />
+          </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
             {/* Main Panel Content (Column span 3 in lg screen) */}
@@ -322,9 +339,9 @@ export default function App() {
       {/* Corporate Academic Footer */}
       <footer className="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500 no-print">
         <div className="max-w-7xl mx-auto px-4 space-y-2">
-          <p className="font-semibold text-slate-400">UniBrasil Centro Universitário — Escola de Comunicação e Negócios</p>
+          <p className="font-semibold text-slate-400">UniBrasil Centro Universitário - Escola de Ciências Humanas e Sociais Aplicadas</p>
           <p className="text-[10px] font-mono uppercase tracking-wider text-slate-600">Rua Konrad Adenauer, 442 - Tarumã, Curitiba - PR</p>
-          <p className="text-[10px] text-slate-600 pt-2">Planejamento interativo da grade de Publicidade e Propaganda conforme diretrizes do PPC.</p>
+          <p className="text-[10px] text-slate-600 pt-2">Painel gestor de Curso - Publicidade e Propaganda - Prof. Lucas Damasio</p>
         </div>
       </footer>
 

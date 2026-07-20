@@ -11,7 +11,7 @@ interface ScheduleSlot {
   professor: string;
 }
 
-const DEFAULT_SCHEDULE_DATA: ScheduleSlot[] = [
+export const DEFAULT_SCHEDULE_DATA: ScheduleSlot[] = [
   // --- 2PPAN (2º Semestre) ---
   // Segunda-feira
   { id: "2-seg-1", turma: "2PPAN", dia: "Segunda-feira", horario: "19h00 - 19h50", coddisc: "16007PP", disciplina: "Fotografia Publicitária", professor: "LUIS FELIPE GOUVEIA PINHO" },

@@ -26,12 +26,22 @@ export default function DocumentViewer({ disciplines }: DocumentViewerProps) {
   // Export to CSV
   const handleExportCSV = () => {
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Codigo,Disciplina,Semestre,Area Conhecimento,Tipo,CH Total,Teorica,Pratica,EAD,Extensao,CH ADS,Creditos,Ementa\n";
+    csvContent += "Codigo,Disciplina,Semestre,Area Conhecimento,Tipo,CH Total,Teorica,Pratica,EAD,Extensao,CH ADS,Creditos,Ementa,Pratica Atividade,Ambiente de Pratica,Local Pratica,Tipo Pratica,Competencia Desenvolvida,Capacidade Atividade,Documento Evidencia,Fragilidade Oportunidade,Nivel Exigencia\n";
     
     disciplines.forEach((d) => {
       const cleanEmenta = (d.ementa || "").replace(/"/g, '""');
       const cleanArea = d.areaConhecimento.replace(/"/g, '""');
-      csvContent += `"${d.id}","${d.nome}",${d.periodo},"${cleanArea}","${d.tipo}",${d.ch},${d.chTeo},${d.chPra},${d.chEad},${d.chExt},${d.chAds},${d.credito},"${cleanEmenta}"\n`;
+      const cleanPraticaAtiv = (d.praticaAtividade || "").replace(/"/g, '""');
+      const cleanAmbiente = (d.ambientePratica || "").replace(/"/g, '""');
+      const cleanLocal = (d.localPratica || "").replace(/"/g, '""');
+      const cleanTipoPrat = (d.tipoPratica || "").replace(/"/g, '""');
+      const cleanComp = (d.competenciaDesenvolvida || "").replace(/"/g, '""');
+      const cleanCapacidade = (d.capacidadeAtividade || "").replace(/"/g, '""');
+      const cleanDoc = (d.documentoEvidencia || "").replace(/"/g, '""');
+      const cleanFrag = (d.fragilidadeOportunidade || "").replace(/"/g, '""');
+      const cleanNivel = (d.nivelExigencia || "").replace(/"/g, '""');
+      
+      csvContent += `"${d.id}","${d.nome}",${d.periodo},"${cleanArea}","${d.tipo}",${d.ch},${d.chTeo},${d.chPra},${d.chEad},${d.chExt},${d.chAds},${d.credito},"${cleanEmenta}","${cleanPraticaAtiv}","${cleanAmbiente}","${cleanLocal}","${cleanTipoPrat}","${cleanComp}","${cleanCapacidade}","${cleanDoc}","${cleanFrag}","${cleanNivel}"\n`;
     });
 
     const encodedUri = encodeURI(csvContent);
@@ -235,8 +245,8 @@ export default function DocumentViewer({ disciplines }: DocumentViewerProps) {
                         </p>
                       )}
 
-                      {(d.praticaAtividade || d.ambientePratica || d.nivelExigencia) && (
-                        <div className="text-[9px] text-slate-500 bg-blue-50/40 p-2 rounded-lg border border-blue-100/50 mt-1.5 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {(d.praticaAtividade || d.ambientePratica || d.nivelExigencia || d.localPratica || d.tipoPratica || d.competenciaDesenvolvida || d.capacidadeAtividade || d.documentoEvidencia || d.fragilidadeOportunidade) && (
+                        <div className="text-[9px] text-slate-500 bg-blue-50/40 p-2 rounded-lg border border-blue-100/50 mt-1.5 grid grid-cols-1 sm:grid-cols-3 gap-3">
                           {d.praticaAtividade && (
                             <div>
                               <strong className="text-blue-900 font-mono text-[8px] uppercase block">Atividade Prática</strong>
@@ -247,6 +257,42 @@ export default function DocumentViewer({ disciplines }: DocumentViewerProps) {
                             <div>
                               <strong className="text-blue-900 font-mono text-[8px] uppercase block">Ambiente</strong>
                               <span className="text-slate-700">{d.ambientePratica}</span>
+                            </div>
+                          )}
+                          {d.localPratica && (
+                            <div>
+                              <strong className="text-blue-900 font-mono text-[8px] uppercase block">Local / Lab / Núcleo / Parceiro</strong>
+                              <span className="text-slate-700">{d.localPratica}</span>
+                            </div>
+                          )}
+                          {d.tipoPratica && (
+                            <div>
+                              <strong className="text-blue-900 font-mono text-[8px] uppercase block">Tipo de Prática</strong>
+                              <span className="text-slate-700">{d.tipoPratica}</span>
+                            </div>
+                          )}
+                          {d.competenciaDesenvolvida && (
+                            <div className="sm:col-span-2">
+                              <strong className="text-blue-900 font-mono text-[8px] uppercase block">Competência Desenvolvida</strong>
+                              <span className="text-slate-700">{d.competenciaDesenvolvida}</span>
+                            </div>
+                          )}
+                          {d.capacidadeAtividade && (
+                            <div>
+                              <strong className="text-blue-900 font-mono text-[8px] uppercase block">Capacidade da Atividade</strong>
+                              <span className="text-slate-700">{d.capacidadeAtividade}</span>
+                            </div>
+                          )}
+                          {d.documentoEvidencia && (
+                            <div>
+                              <strong className="text-blue-900 font-mono text-[8px] uppercase block">Documento / Evidência</strong>
+                              <span className="text-slate-700">{d.documentoEvidencia}</span>
+                            </div>
+                          )}
+                          {d.fragilidadeOportunidade && (
+                            <div className="sm:col-span-2">
+                              <strong className="text-blue-900 font-mono text-[8px] uppercase block">Fragilidade / Oportunidade</strong>
+                              <span className="text-slate-700">{d.fragilidadeOportunidade}</span>
                             </div>
                           )}
                           {d.nivelExigencia && (

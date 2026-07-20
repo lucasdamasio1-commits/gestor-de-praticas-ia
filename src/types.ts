@@ -20,6 +20,12 @@ export interface Discipline {
   praticaAtividade?: string; // e.g. "Criação de portfólio"
   ambientePratica?: string; // e.g. "Estúdio de Fotografia"
   nivelExigencia?: string; // "Exigência Baixa" | "Exigência Média" | "Exigência Alta"
+  localPratica?: string; // Local / Laboratório / Núcleo / Parceiro
+  tipoPratica?: string; // Tipo de Prática
+  competenciaDesenvolvida?: string; // Competência / Habilidade Desenvolvida
+  capacidadeAtividade?: string; // Capacidade da Atividade
+  documentoEvidencia?: string; // Documento / Evidência
+  fragilidadeOportunidade?: string; // Fragilidade / Oportunidade de Melhoria
 }
 
 export interface CampaignSuggestion {

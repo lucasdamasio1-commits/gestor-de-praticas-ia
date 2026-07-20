@@ -83,6 +83,167 @@ Retorne APENAS o JSON no formato:
     }
   ]
 }`;
+    } else if (action === "generateLessonPlan") {
+      const { disciplineName, syllabus, period, professor, coddisc, chTeo, chPra, chAds } = req.body;
+      const isHighTheory = chTeo && (chTeo >= 60 || chTeo > chPra);
+      const hasAds = chAds && chAds > 0;
+
+      prompt = `Você é um assessor acadêmico sênior do UniBrasil. Elabore um plano de ensino, aprendizagem e cronograma de aula completo, alinhado com o padrão institucional do UniBrasil em português do Brasil para a disciplina "${disciplineName}" (Código: "${coddisc || ''}"), ministrada pelo(a) Prof(a). "${professor || ''}" para o período "${period || ''}".
+
+Informações de Carga Horária:
+- Carga Horária Teórica: ${chTeo || 0}h
+- Carga Horária Prática: ${chPra || 0}h
+- Carga Horária de ADS (Atividades Discentes Supervisionadas): ${chAds || 0}h
+${isHighTheory ? "- ATENÇÃO: Esta disciplina possui alta carga teórica. A estratégia de avaliação deve obrigatoriamente prever a realização de provas teóricas individuais por bimestre." : ""}
+${hasAds ? "- ATENÇÃO: Esta disciplina possui carga horária de ADS. Portanto, o componente ADS deve obrigatoriamente constar na avaliação de desempenho, e as atividades de ADS dos bimestres devem ser especificadas." : ""}
+
+Ementa Oficial do PPC: "${syllabus || ''}"
+
+Retorne um objeto JSON estrito com o seguinte formato exato:
+{
+  "objetivoGeral": "Uma descrição concisa e formal do objetivo geral da disciplina, orientada ao desenvolvimento profissional (1 parágrafo robusto).",
+  "objetivosEspecificos": [
+    "Objetivo específico 1 orientando competências práticas ou conceituais",
+    "Objetivo específico 2",
+    "Objetivo específico 3",
+    "Objetivo específico 4"
+  ],
+  "competencias": [
+    "Competência profissional 1 (ex: Planejar campanhas integradas de comunicação)",
+    "Competência profissional 2",
+    "Competência profissional 3",
+    "Competência profissional 4"
+  ],
+  "metodologia": "Detalhamento de estratégias didáticas ativas, dinâmica de trabalho de estúdio, agência experimental ou laboratório (2 a 3 parágrafos).",
+  "atividadesDiscentes": "Descrição das atividades dirigidas, pesquisas de campo, trabalhos individuais e em equipe conduzidos fora ou dentro do ambiente de sala de aula.",
+  "procedimentosAvaliacao": "Procedimentos formais de avaliação institucional, detalhando as regras de provas individuais ${isHighTheory ? '(especificando a obrigatoriedade de provas individuais teóricas e discursivas devido à carga teórica)' : ''} e projetos práticos.",
+  "atividadesAds": {
+    "bimestre1": "${hasAds ? 'Detalhamento estruturado da Atividade Discente Supervisionada (ADS) do 1º Bimestre de acordo com os critérios institucionais.' : 'Não aplicável para esta disciplina (Carga horária de ADS: 0h).'}",
+    "bimestre2": "${hasAds ? 'Detalhamento estruturado da Atividade Discente Supervisionada (ADS) do 2º Bimestre de acordo com os critérios institucionais.' : 'Não aplicável para esta disciplina (Carga horária de ADS: 0h).'}"
+  },
+  "atividadesAvaliativas": {
+    "bimestre1": {
+      "descricao": "Instrumentos detalhados e integrados do 1º Bimestre ${hasAds ? '(com a inclusão explícita da ADS de forma detalhada)' : ''} ${isHighTheory ? 'e prova teórica individual obrigatória' : ''}.",
+      "peso": "Peso sugerido (ex: 4.0 Prova Individual / 6.0 Projeto Prático)"
+    },
+    "bimestre2": {
+      "descricao": "Instrumentos detalhados de fechamento e conclusão do 2º Bimestre ${hasAds ? '(com a inclusão explícita da ADS de forma detalhada)' : ''} ${isHighTheory ? 'e prova teórica individual de encerramento' : ''}.",
+      "peso": "Peso sugerido (ex: 4.0 Prova Individual / 6.0 Campanha Final)"
+    }
+  },
+  "cronograma": [
+    {
+      "semana": 1,
+      "conteudo": "Conteúdo programático planejado para a Semana 1",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 1"
+    },
+    {
+      "semana": 2,
+      "conteudo": "Conteúdo programático planejado para a Semana 2",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 2"
+    },
+    {
+      "semana": 3,
+      "conteudo": "Conteúdo programático planejado para a Semana 3",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 3"
+    },
+    {
+      "semana": 4,
+      "conteudo": "Conteúdo programático planejado para a Semana 4",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 4"
+    },
+    {
+      "semana": 5,
+      "conteudo": "Conteúdo programático planejado para a Semana 5",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 5"
+    },
+    {
+      "semana": 6,
+      "conteudo": "Conteúdo programático planejado para a Semana 6",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 6"
+    },
+    {
+      "semana": 7,
+      "conteudo": "Conteúdo programático planejado para a Semana 7",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 7"
+    },
+    {
+      "semana": 8,
+      "conteudo": "Conteúdo programático planejado para a Semana 8",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 8"
+    },
+    {
+      "semana": 9,
+      "conteudo": "Conteúdo programático planejado para a Semana 9",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 9"
+    },
+    {
+      "semana": 10,
+      "conteudo": "Conteúdo programático planejado para a Semana 10",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 10"
+    },
+    {
+      "semana": 11,
+      "conteudo": "Conteúdo programático planejado para a Semana 11",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 11"
+    },
+    {
+      "semana": 12,
+      "conteudo": "Conteúdo programático planejado para a Semana 12",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 12"
+    },
+    {
+      "semana": 13,
+      "conteudo": "Conteúdo programático planejado para a Semana 13",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 13"
+    },
+    {
+      "semana": 14,
+      "conteudo": "Conteúdo programático planejado para a Semana 14",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 14"
+    },
+    {
+      "semana": 15,
+      "conteudo": "Conteúdo programático planejado para a Semana 15",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 15"
+    },
+    {
+      "semana": 16,
+      "conteudo": "Conteúdo programático planejado para a Semana 16",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 16"
+    },
+    {
+      "semana": 17,
+      "conteudo": "Conteúdo programático planejado para a Semana 17",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 17"
+    },
+    {
+      "semana": 18,
+      "conteudo": "Conteúdo programático planejado para a Semana 18",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 18"
+    },
+    {
+      "semana": 19,
+      "conteudo": "Conteúdo programático planejado para a Semana 19",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 19"
+    },
+    {
+      "semana": 20,
+      "conteudo": "Conteúdo programático planejado para a Semana 20",
+      "atividades": "Atividade ou estratégia metodológica sugerida para a Semana 20"
+    }
+  ],
+  "referencias": {
+    "basicas": ["string", "string", "string"],
+    "complementares": ["string", "string", "string"]
+  },
+  "sugestoesLeitura": "Sugestões de artigos, portais (Meio & Mensagem, Adnews) ou livros complementares para enriquecimento profissional."
+}
+
+Importante:
+1. Retorne EXATAMENTE 20 semanas sequenciais de aula coerentes com o número de créditos.
+2. Use abordagens práticas modernas de agência de publicidade.
+3. Retorne estritamente apenas o JSON formatado.`;
     } else {
       return res.status(400).json({ error: "Ação não suportada" });
     }
@@ -269,6 +430,44 @@ function getFallbackData(action: string, activityName: string, category: string)
           ]
         }
       ]
+    };
+  } else if (action === "generateLessonPlan") {
+    return {
+      objetivoGeral: "Capacitar os discentes a compreender as teorias, técnicas e ferramentas fundamentais aplicadas à publicidade contemporânea, aliando conceitos estratégicos e expressão criativa em estúdio e ambiente prático.",
+      objetivosEspecificos: [
+        "Compreender a conceituação e o panorama mercadológico contemporâneo.",
+        "Desenvolver competências de criação, redação ou planejamento adequados.",
+        "Aplicar recursos tecnológicos e práticos na produção de peças ou projetos de comunicação.",
+        "Apresentar e justificar de forma analítica e persuasiva os resultados obtidos."
+      ],
+      metodologia: "Aulas expositivas síncronas integradas a dinâmicas de metodologias ativas de aprendizagem, estudos de caso e projetos práticos. Uso intensivo de estúdios (fotografia, audiovisual) ou laboratório de informática, fomentando a cultura de agência experimental.",
+      atividadesAvaliativas: {
+        bimestre1: {
+          descricao: "Trabalho individual e prático focado em conceitos iniciais e diagnóstico estratégico.",
+          peso: "Peso: 10.0"
+        },
+        bimestre2: {
+          descricao: "Desenvolvimento de campanha integrada e portfólio prático de encerramento.",
+          peso: "Peso: 10.0"
+        }
+      },
+      cronograma: Array.from({ length: 20 }, (_, i) => ({
+        semana: i + 1,
+        conteudo: `Módulo Didático - Tópico ${i + 1}: Exercício analítico de Publicidade e Propaganda do UniBrasil.`,
+        atividades: "Atividade prática supervisionada e discussão coletiva de referências de mercado."
+      })),
+      referencias: {
+        basicas: [
+          "KOTLER, Philip. Marketing 5.0. Rio de Janeiro: Sextante, 2021.",
+          "CARRASCOSA, João. Redação Publicitária. São Paulo: Futura, 2016.",
+          "SANTAELLA, Lucia. Comunicação e Pesquisa. São Paulo: Hacker, 2015."
+        ],
+        complementares: [
+          "OGILVY, David. Confissões de um Publicitário. Bertrand Brasil, 2011.",
+          "JENKINS, Henry. Cultura da Convergência. São Paulo: Aleph, 2019.",
+          "BAUMAN, Zygmunt. Modernidade Líquida. Rio de Janeiro: Zahar, 2011."
+        ]
+      }
     };
   }
   return {};
